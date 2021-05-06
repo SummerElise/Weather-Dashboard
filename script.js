@@ -6,20 +6,20 @@ const weatherContainerEl = document.getElementById("todayWeatherContainer");
 const cityHistoryEl = document.getElementById("searchHistory");
 const forecastEl = document.getElementById("forecast");
 const fiveDayContainerEl = document.getElementById("fiveDay-container");
-const historyButtonsEl = document.getElementById("search-history-buttons");
+const searchHistoryButtonsEl = document.getElementById("search-history-buttons");
 
 let formSubmitHandler = function(event){
     event.preventDefault();
     let city = searchInputEl.value.trim();
     if(city){
         getCityWeather(city);
-        getfiveDay(city);
+        get5Day(city);
         cities.unshift({city});
         searchInputEl.value = "";
     }
     saveSearch();
     searchHistory(city);
-    }
+ }
  
 
   
@@ -30,7 +30,7 @@ let saveSearch = function(){
 
 let getCityWeather = function(city){
     var apiKey = "555a662aebacc0eabe7f6ef8fca6d35d"
-    var apiURL = `https://api.openweathermap.org/data/2.5/weather?q={city}&units=imperial&appid=${apiKey}`
+    var apiURL = `https://api.openweathermap.org/data/2.5/weather?q={city}&units=imperial&appid={apiKey}`
 
     fetch(apiURL)
     .then(function(response){
@@ -84,7 +84,7 @@ let getUvIndex = function(lat, lon){
             displayUvIndex(data)
         });
     });
-}
+};
 
 let displayUvIndex = function(index){
     let uvIndexEl = document.createElement("div");
@@ -95,17 +95,44 @@ let displayUvIndex = function(index){
     uvIndexValue.textContent = index.value
 }
 
-let historyButtonsEl = function(searchHistory){
-    historyButtonsEl = document.createElement("button");
-    historyButtonsEl.textContent = searchHistory;
-    historyButtonsEl.classList = "d-flex w-100 btn-dark border p-2";
-    historyButtonsEl.setAttribute("data-city", searchHistory)
-    historyButtonsEl.setAttribute("type", "submit");
+let get5Day = function(city){    
+    let apiURL = "https://api.openweathermap.org/data/2.5/forecast?q=${city}&units=imperial&appid=${555a662aebacc0eabe7f6ef8fca6d35d}"
 
-    historyButtonsEl.prepend(searchHistoryEl);
+    fetch(apiURL)
+    .then(function(response){
+        response.json().then(function(data){
+            display5Day(data);
+        });
+    });
+};
+
+let display5Day = function(weather){
+    fiveDayContainerEl.textContent = ""
+    forecastEl.textContent = "5-Day Forecast: ";
+
+    let forecast = weather.list;
+    for(var i=5; i < forecast.length; i=i+8){
+        let dailyForecast = forecast[i];
+
+    let forecastEl=document.createElement('div');
+    forecastEl.classList = "card bg-primary text-light m-2";
+
+    fiveDayContainerEl.appendChild(forecastEl);
+    }
 }
 
-let searchHistoryHandler = function(event) {
+let historyButtons = function(historyButtons){
+
+    historyButtonsEl = document.createElement("button");
+    historyButtonsEl.textContent = historyButtons;
+    historyButtonsEl.classList = "d-flex w-100 btn-light border p-2";
+    historyButtonsEl.setAttribute("data-city", historyButtons)
+    historyButtonsEl.setAttribute("type", "submit");
+
+    searchHistoryButtonsEl.prepend(historyButtonsEl);
+}
+
+let historyButtonsHandler = function(event) {
     let city = event.target.getAttribute("data-city")
     if(city) {
         getCityWeather(city);
@@ -113,5 +140,7 @@ let searchHistoryHandler = function(event) {
     }
 }
 
+historyButtons();
+
 cityFormEl.addEventListener("submit", formSubmitHandler);
-historyButtonsEl.addEventListener("click", historyButtonsHandler);
+searchHistoryButtonsEl.addEventListener("click", historyButtonsHandler);

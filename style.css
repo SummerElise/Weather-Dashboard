@@ -2,3 +2,15 @@
    background-color:lightslategray; 
 }
 
+header {
+    background-color: yellow;
+}
+
+.card-body {
+    flex: auto;
+}
+
+.list-group-item {
+    line-height: 0.5;
+    border: none;
+}
