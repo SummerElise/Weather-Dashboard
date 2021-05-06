@@ -4,38 +4,49 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous"/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="./style.css">
     <title>Weather Dashboard</title>
 </head>
+
 <body>
     <header>
         <h1>WEATHER DASHBOARD</h1>
     </header>
 
-    <div class="container">
+    <div class="container-fluid">
+
         <div class="row">
-            <div id="content-left" class="col-md-3 search">
-                <form>
+            <div class="col-md-3">
+
+            <div id="content-left" class="col-mt-5 search">
+                <form class = border p-2 id = "city-form">
                 <h2>Search for a city:</h2>
                 <div class="formRow">
                     <input id="search-city" class="form-control" name="city" value=""></input>
                     <button id="search-button" class="btn btn-primary" type="submit"><i class="fas fa-search"></i></button>
                 </div>
                 </form>
-            <div class="mt-5" id="searchHistory">
+
+            <div class="mt-5" id="search-history-buttons">
     </div>
-    
-    <div class="col-md-9 pt-4">
-      <div id="weather-forecast" class="container"></div>
+            <ul class="list-group mt-3"></ul>
+    </div>
+
+    <div class="col-offset-md-1">
+      <div id="todayWeatherContainer"></div>
+      <div class="row mt-5 forecast-row">
+          <h2 class="col-12" id= "forecast"></h2>
+          <div class = "d-flex" id = "fiveDay-container"></div>
+      </div>
       </div>
     </div>
     </div>
     
 
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
-    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.27.0/moment.min.js"></script>
+    <script src="./script.js"></script>
 </body>
 </html>
