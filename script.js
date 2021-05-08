@@ -13,32 +13,32 @@ let formSubmitHandler = function(event){
     event.preventDefault();
     let city = searchInputEl.value.trim();
     if(city){
-        getCurrentWeather(city);
-        get5Day();
+        getCityWeather(city);        
         cities.unshift({city});
         searchInputEl.value = "";
-    }  
+
     saveSearch();
     searchHistory(city);
- }
+}
+}
 
 let saveSearch = function(){
     localStorage.setItem("cities", JSON.stringify(cities));
 };
 
 
-let getCurrentWeather = function(city){
+let getCityWeather = function(city){
     const currentAPI = 'https://api.openweathermap.org/data/2.5/weather?q=Raleigh,US&appid=555a662aebacc0eabe7f6ef8fca6d35d';
 
     fetch(currentAPI)
     .then(function(response){
         response.json().then(function(data){
-            displayCurrentWeather(data, city);
+            displayCityWeather(data, city);
         });
     });
 };
 
-let displayCurrentWeather = function(weather, searchCity){
+let displayCityWeather = function(weather, searchCity){
    
    weatherContainerEl.textContent= "";  
    searchInputEl.textContent=searchCity;
@@ -64,9 +64,9 @@ let weatherImg = document.createElement("img")
 weatherImg.setAttribute("src", 'https://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png');
 searchInputEl.appendChild(weatherImg)
 
-weatherContainer.appendChild(temperatureEl);
-weatherContainer.appendChild(windSpeedEl);
-weatherContainer.appendChild(humidityEl);
+weatherContainerEl.appendChild(temperatureEl);
+weatherContainerEl.appendChild(windSpeedEl);
+weatherContainerEl.appendChild(humidityEl);
 
 let lat = weather.coord.lat;
 let lon = weather.coord.lon;
