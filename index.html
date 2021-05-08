@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous"/>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="./style.css">
     <title>Weather Dashboard</title>
 </head>
@@ -18,28 +17,23 @@
     <div class="container-fluid">
 
         <div class="row">
-            <div class="col-12 col-md-3 p-2 search-column">
-                <form class = "border p-2" id = "city-form">
+            <div class="col-12 col-md-4 p-4 search-column">
+                <form class = "border p-4" id = "city-form">
                 <h2>Search for a city:</h2>
-                <div class="formRow">
                     <input id="search-city" type="text" autofocus = "true" class= "form-input"/>
-                    <button class="search-button" class="btn btn-primary" type="submit"><i class="fas fa-search"></i></button>
-                </div>
+                    <button class="btn btn-primary" type="submit"><i class="fas fa-search"></i></button>
                 </form>
+                <div class="search-history border" id="search-history-buttons"></div>
             </div>
-        </div>
-
-            <div class="history-border" id="search-history-buttons"></div>
-            </div>
-
-            <div class= "col-12 col-md-9">
-                <div class="row border chosen-city" id = "current-weather">
+        
+            <div class= "col-10 col-md-9">
+                <div class="row border selected-city" id = "current-weather">
                     <div class = "col-12">
                         <h3 id="searched-cities"></h3>
                         <div id="todayWeatherContainer" class="list-group"></div>
                     </div>
                 </div>
-                <div class="row mt-5" id= "five-day-forecast-row">
+                <div class="row border" id= "five-day-forecast">
                         <h4 class="col-12" id= "forecast"></h4>
                         <div class = "d-flex" id = "fiveDay-container"></div>
                 </div>
