@@ -8,19 +8,18 @@ let searchHistoryButtonEl = document.getElementById("search-history-button")
 
 const cities = [];
 
+
 let formSubmitHandler = function(event){
     event.preventDefault();
     let city = searchInputEl.value.trim();
     if(city){
         getCurrentWeather(city);
-        get5Day(city);
+        get5Day();
         cities.unshift({city});
         searchInputEl.value = "";
     }  
     saveSearch();
-    searchHistoryButtonEl(city);
-
-    console.log(formSubmitHandler);
+    searchHistory(city);
  }
 
 let saveSearch = function(){
@@ -34,7 +33,7 @@ let getCurrentWeather = function(city){
     fetch(currentAPI)
     .then(function(response){
         response.json().then(function(data){
-            displayWeather(data, city);
+            displayCurrentWeather(data, city);
         });
     });
 };
@@ -42,12 +41,12 @@ let getCurrentWeather = function(city){
 let displayCurrentWeather = function(weather, searchCity){
    
    weatherContainerEl.textContent= "";  
-   cityHistoryEl.textContent=searchCity;
+   searchInputEl.textContent=searchCity;
 
 
 let currentDate = document.createElement("span")
 currentDate.textContent=" (" + moment(weather.dt.value).format("MMM D, YYYY") + ") ";
-cityHistoryEl.appendChild(currentDate);
+searchInputEl.appendChild(currentDate);
 
 let temperatureEl = document.createElement("span");
 temperatureEl.textContent = "Temperature: " + weather.main.temp + " F";
@@ -63,7 +62,7 @@ humidityEl.classList = "list-group-item"
 
 let weatherImg = document.createElement("img")
 weatherImg.setAttribute("src", 'https://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png');
-cityHistoryEl.appendChild(weatherImg)
+searchInputEl.appendChild(weatherImg)
 
 weatherContainer.appendChild(temperatureEl);
 weatherContainer.appendChild(windSpeedEl);
@@ -74,7 +73,7 @@ let lon = weather.coord.lon;
 getUvIndex(lat,lon)
 
 
-let getUvIndex = function(lat, lon){
+let getUvIndex = function(_lat, _lon){
     const uvAPI ='http://api.openweathermap.org/data/2.5/onecall?lat=33.44&lon=-94.04&exclude=hourly,daily&appid=555a662aebacc0eabe7f6ef8fca6d35d';
     fetch(uvAPI)
     .then(function(response) {
@@ -104,7 +103,7 @@ let displayUvIndex = function(index){
     weatherContainerEl.appendChild(uvIndexEl);
 }
 
- get5Day() = function(city){       
+  let get5Day= function(){       
     const fiveDayAPI = 'http://api.openweathermap.org/data/2.5/forecast?q=Raleigh,US&appid=555a662aebacc0eabe7f6ef8fca6d35d';
 
     fetch(fiveDayAPI)
@@ -176,4 +175,3 @@ let searchHistoryHandler = function(event) {
 }
 
 cityFormEl.addEventListener("submit", formSubmitHandler);
-searchHistoryButtonEl.addEventListener("click", searchHistoryHandler);
