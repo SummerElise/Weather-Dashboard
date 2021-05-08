@@ -29,7 +29,7 @@ let saveSearch = function(){
 
 
 let getCurrentWeather = function(city){
-    const currentAPI = 'https://api.openweathermap.org/data/2.5/weather?q=${cityName},US&appid=555a662aebacc0eabe7f6ef8fca6d35d';
+    const currentAPI = 'https://api.openweathermap.org/data/2.5/weather?q=Raleigh,US&appid=555a662aebacc0eabe7f6ef8fca6d35d';
 
     fetch(currentAPI)
     .then(function(response){
@@ -105,7 +105,7 @@ let displayUvIndex = function(index){
 }
 
  get5Day() = function(city){       
-    const fiveDayAPI = 'http://api.openweathermap.org/data/2.5/forecast?q=${cityName},US&appid=555a662aebacc0eabe7f6ef8fca6d35d';
+    const fiveDayAPI = 'http://api.openweathermap.org/data/2.5/forecast?q=Raleigh,US&appid=555a662aebacc0eabe7f6ef8fca6d35d';
 
     fetch(fiveDayAPI)
     .then(function(response){
@@ -172,6 +172,7 @@ let searchHistoryHandler = function(event) {
         getCityWeather(city);
         get5day(city);
     }
+}
 }
 
 cityFormEl.addEventListener("submit", formSubmitHandler);
