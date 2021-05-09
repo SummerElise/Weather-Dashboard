@@ -1,67 +1,75 @@
-let cityFormEl = document.getElementById("city-form")
-let searchInputEl = document.getElementById("search-city")
-let weatherContainerEl = document.getElementById("todayWeatherContainer")
-let cityHistoryEl = document.getElementById("searchInput")
-let forecastEl = document.getElementById("forecast")
-let fiveDayContainerEl = document.getElementById("fiveDay-container")
-let searchHistoryButtonEl = document.getElementById("search-history-button")
+let cities = [];
+let get5day;
 
-const cities = [];
-
+let cityFormEl = document.querySelector("#city-form");
+let searchInputEl = document.querySelector("#search-city");
+let weatherContainerEl = document.querySelector("#today-weather-Container");
+let cityHistoryEl = document.querySelector("#searched-Input");
+let forecastHeader = document.querySelector("#forecast");
+let fiveDayContainerEl = document.querySelector("#fiveDay-container");
+let searchHistoryButtonEl = document.querySelector("#search-history-buttons");
 
 let formSubmitHandler = function(event){
     event.preventDefault();
     let city = searchInputEl.value.trim();
     if(city){
-        getCityWeather(city);        
+        getCityWeather(city);              
         cities.unshift({city});
         searchInputEl.value = "";
-
+    } else{
+        alert("Error. City name must be entered.");
+    }
     saveSearch();
     searchHistory(city);
+    //working
+    console.log(searchHistory);
 }
-}
+
 
 let saveSearch = function(){
     localStorage.setItem("cities", JSON.stringify(cities));
+    //working
+    console.log(saveSearch);
 };
 
 
 let getCityWeather = function(city){
-    const currentAPI = 'https://api.openweathermap.org/data/2.5/weather?q=Raleigh,US&appid=555a662aebacc0eabe7f6ef8fca6d35d';
-
-    fetch(currentAPI)
+    let currentWeather = 'https://api.openweathermap.org/data/2.5/weather?q=raleigh&units=imperial&appid=555a662aebacc0eabe7f6ef8fca6d35d'
+    console.log(currentWeather);
+    fetch(currentWeather)
     .then(function(response){
-        response.json().then(function(data){
-            displayCityWeather(data, city);
+        response.json()
+        .then(function(data){
+        displayWeather(data);        
         });
     });
 };
 
-let displayCityWeather = function(weather, searchCity){
+
+let displayWeather = function(weather, searchCity){
    
-   weatherContainerEl.textContent= "";  
-   searchInputEl.textContent=searchCity;
+   weatherContainerEl.textContent= "d";  
+   cityHistoryEl.textContent=searchCity;
 
 
 let currentDate = document.createElement("span")
-currentDate.textContent=" (" + moment(weather.dt.value).format("MMM D, YYYY") + ") ";
+currentDate.textContent=" (" + moment(weather.value).format("MMM Do, YYYY") + ") ";
 searchInputEl.appendChild(currentDate);
 
 let temperatureEl = document.createElement("span");
 temperatureEl.textContent = "Temperature: " + weather.main.temp + " F";
-temperatureEl.classList = "list-group-item"
+temperatureEl.classList.add = "list-group-item"
 
 let windSpeedEl = document.createElement("span");
 windSpeedEl.textContent = "Wind Speed: " + weather.wind.speed + " mph";
-windSpeedEl.classList = "list-group-item"
+windSpeedEl.classList.add = "list-group-item"
 
 let humidityEl = document.createElement("span");
 humidityEl.textContent = "Humidity: " + weather.main.humidity + " %";
-humidityEl.classList = "list-group-item"
+humidityEl.classList.add = "list-group-item"
 
 let weatherImg = document.createElement("img")
-weatherImg.setAttribute("src", 'https://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png');
+
 searchInputEl.appendChild(weatherImg)
 
 weatherContainerEl.appendChild(temperatureEl);
@@ -71,10 +79,10 @@ weatherContainerEl.appendChild(humidityEl);
 let lat = weather.coord.lat;
 let lon = weather.coord.lon;
 getUvIndex(lat,lon)
+}
 
-
-let getUvIndex = function(_lat, _lon){
-    const uvAPI ='http://api.openweathermap.org/data/2.5/onecall?lat=33.44&lon=-94.04&exclude=hourly,daily&appid=555a662aebacc0eabe7f6ef8fca6d35d';
+let getUvIndex = function(lat,lon){
+    const uvAPI ='http://api.openweathermap.org/data/2.5/onecall?lat=$&lon=$&exclude=hourly,daily&appid=555a662aebacc0eabe7f6ef8fca6d35d'
     fetch(uvAPI)
     .then(function(response) {
         response.json().then(function(data){
@@ -104,22 +112,22 @@ let displayUvIndex = function(index){
 }
 
   let get5Day= function(){       
-    const fiveDayAPI = 'http://api.openweathermap.org/data/2.5/forecast?q=Raleigh,US&appid=555a662aebacc0eabe7f6ef8fca6d35d';
+    const fiveDays = 'http://api.openweathermap.org/data/2.5/onecall?lat=35.787743&lon=-78.644257&&units=imperial&exclude=current,minutely,hourlyappid=555a662aebacc0eabe7f6ef8fca6d35d'
 
-    fetch(fiveDayAPI)
+    fetch(fiveDays)
     .then(function(response){
         response.json().then(function(data){
-            display5Day(data[1]);
+            display5Day(data[0]);
         });
     });
 };
 
 let display5Day = function(weather){
     fiveDayContainerEl.textContent = ""
-    forecastEl.textContent = "5-Day Forecast: ";
+    forecastHeader.textContent = "5-Day Forecast: ";
 
     let forecast = weather.list;
-    for(let i=5; i < forecast.length; i=i+8){
+    for(var i=5; i < forecast.length; i=i+8){
         let dailyForecast = forecast[i];
 
     let forecastEl=document.createElement('div');
@@ -153,16 +161,17 @@ let display5Day = function(weather){
     }
 }
 
+let searchHistory = function(searchHistory){
 
-let searchHistoryButtonEl = function(searchHistory){
+    console.log(searchHistory);
 
     searchHistoryEl = document.createElement("button");
     searchHistoryEl.textContent = searchHistory;
     searchHistoryEl.classList = "d-flex w-100 btn-light border p-2";
-    searchHistoryEl.setAttribute("data-city", searchHistory)
+    searchHistoryEl.setAttribute("data-city",searchHistory)
     searchHistoryEl.setAttribute("type", "submit");
 
-    searchHistoryButtonEl.prepend(searchHistoryButtonEl);
+    searchHistoryButtonEl.prepend(searchHistoryEl);
 }
 
 let searchHistoryHandler = function(event) {
@@ -172,6 +181,6 @@ let searchHistoryHandler = function(event) {
         get5day(city);
     }
 }
-}
-
+//searchHistory();
 cityFormEl.addEventListener("submit", formSubmitHandler);
+searchHistoryButtonEl.addEventListener("click", searchHistoryHandler);
