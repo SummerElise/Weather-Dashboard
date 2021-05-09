@@ -1,9 +1,9 @@
 let cities = [];
-let get5day;
+
 
 let cityFormEl = document.querySelector("#city-form");
-let searchInputEl = document.querySelector("#search-city");
-let weatherContainerEl = document.querySelector("#today-weather-Container");
+let searchInputEl = document.querySelector("#search-City");
+let weatherContainerEl = document.querySelector("#todays-weather-Container");
 let cityHistoryEl = document.querySelector("#searched-Input");
 let forecastHeader = document.querySelector("#forecast");
 let fiveDayContainerEl = document.querySelector("#fiveDay-container");
@@ -34,7 +34,7 @@ let saveSearch = function(){
 
 
 let getCityWeather = function(city){
-    let currentWeather = 'https://api.openweathermap.org/data/2.5/weather?q=raleigh&units=imperial&appid=555a662aebacc0eabe7f6ef8fca6d35d'
+    let currentWeather = 'https://api.openweathermap.org/data/2.5/weather?q=${city}&units=imperial&appid=555a662aebacc0eabe7f6ef8fca6d35d'
     console.log(currentWeather);
     fetch(currentWeather)
     .then(function(response){
@@ -47,22 +47,25 @@ let getCityWeather = function(city){
 
 
 let displayWeather = function(weather, searchCity) {
+
+    weatherContainerEl.textContent="";
+    searchInputEl.textContent=searchCity;
    
  let currentDate = document.createElement("span")
 currentDate.textContent=" (" + moment(weather.value).format("MMM Do, YYYY") + ") ";
 searchInputEl.appendChild(currentDate);
 
 let temperatureEl = document.createElement("span");
-temperatureEl.textContent = "Temperature: " + weather.main.temp + " F";
-temperatureEl.classList.add = "list-group-item"
+temperatureEl.textContent = "Temperature: " + weather.main.temperature + " F";
+temperatureEl.classList= "list-group-item"
 
 let windSpeedEl = document.createElement("span");
-windSpeedEl.textContent = "Wind Speed: " + weather.wind.speed + " mph";
-windSpeedEl.classList.add = "list-group-item"
+windSpeedEl.textContent = "Wind Speed: " + weather.wind.Speed + " mph";
+windSpeedEl.classList = "list-group-item"
 
 let humidityEl = document.createElement("span");
 humidityEl.textContent = "Humidity: " + weather.main.humidity + " %";
-humidityEl.classList.add = "list-group-item"
+humidityEl.classList = "list-group-item"
 
 let weatherImg = document.createElement("img")
 
@@ -78,8 +81,8 @@ getUvIndex(lat,lon)
 }
 
 let getUvIndex = function(lat,lon){
-    const uvAPI ='http://api.openweathermap.org/data/2.5/onecall?lat=$&lon=$&exclude=hourly,daily&appid=555a662aebacc0eabe7f6ef8fca6d35d'
-    fetch(uvAPI)
+    const onecallAPI ='https://api.openweathermap.org/data/2.5/onecall?lat={lat}&lon={lon}&exclude=hourly,daily,minutely&appid=555a662aebacc0eabe7f6ef8fca6d35d'
+    fetch(onecallAPI)
     .then(function(response) {
         response.json()
         .then(function(data){
@@ -108,18 +111,18 @@ let displayUvIndex = function(index){
     weatherContainerEl.appendChild(uvIndexEl);
 }
 
-  let get5Day= function(){       
+  let getfiveDay= function(){       
     const fiveDays = 'http://api.openweathermap.org/data/2.5/onecall?lat=35.787743&lon=-78.644257&&units=imperial&exclude=current,minutely,hourlyappid=555a662aebacc0eabe7f6ef8fca6d35d'
 
     fetch(fiveDays)
     .then(function(response){
         response.json().then(function(data){
-            display5Day(data[0]);
+            displayfiveDay(data[1]);
         });
     });
 };
 
-let display5Day = function(weather){
+let displayfiveDay = function(weather){
     fiveDayContainerEl.textContent = ""
     forecastHeader.textContent = "5-Day Forecast: ";
 
@@ -175,7 +178,7 @@ let searchHistoryHandler = function(event) {
     let city = event.target.getAttribute("data-city")
     if(city) {
         getCityWeather(city);
-        get5day(city);
+        getfiveDay(city);
     }
 }
 //searchHistory();
