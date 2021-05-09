@@ -38,21 +38,17 @@ let getCityWeather = function(city){
     console.log(currentWeather);
     fetch(currentWeather)
     .then(function(response){
-        response.json()
+       return response.json();
+    })
         .then(function(data){
-        displayWeather(data);        
+        displayWeather(data, city);        
         });
-    });
-};
+    }
 
 
-let displayWeather = function(weather, searchCity){
+let displayWeather = function(weather, searchCity) {
    
-   weatherContainerEl.textContent= "d";  
-   cityHistoryEl.textContent=searchCity;
-
-
-let currentDate = document.createElement("span")
+ let currentDate = document.createElement("span")
 currentDate.textContent=" (" + moment(weather.value).format("MMM Do, YYYY") + ") ";
 searchInputEl.appendChild(currentDate);
 
@@ -85,7 +81,8 @@ let getUvIndex = function(lat,lon){
     const uvAPI ='http://api.openweathermap.org/data/2.5/onecall?lat=$&lon=$&exclude=hourly,daily&appid=555a662aebacc0eabe7f6ef8fca6d35d'
     fetch(uvAPI)
     .then(function(response) {
-        response.json().then(function(data){
+        response.json()
+        .then(function(data){
             displayUvIndex(data)
         });
     });

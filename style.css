@@ -11,6 +11,23 @@ header {
 }
 
 .list-group-item {
-    line-height: 0.5;
+    line-height: 1px;
     border: none;
+}
+
+span.low, span.medium, span.high {
+    padding: 4px;
+    color: white;
+}
+
+span.low {
+    background-color: green;
+}
+
+span.medium {
+    background-color: yellow;
+}
+
+span.high {
+    background-color: red;
 }
