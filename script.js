@@ -4,7 +4,7 @@ let cities = [];
 let cityFormEl = document.querySelector("#city-form");
 let searchInputEl = document.querySelector("#search-City");
 let weatherContainerEl = document.querySelector("#todays-weather-Container");
-let cityHistoryEl = document.querySelector("#searched-Input");
+let cityHistoryEl = document.querySelector("searched-Input");
 let forecastHeader = document.querySelector("#forecast");
 let fiveDayContainerEl = document.querySelector("#fiveDay-container");
 let searchHistoryButtonEl = document.querySelector("#search-history-buttons");
@@ -34,37 +34,37 @@ let saveSearch = function(){
 
 
 let getCityWeather = function(city){
-    let currentWeather = 'https://api.openweathermap.org/data/2.5/weather?q=${city}&units=imperial&appid=555a662aebacc0eabe7f6ef8fca6d35d'
+    let currentWeather = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=imperial&appid=555a662aebacc0eabe7f6ef8fca6d35d`
     console.log(currentWeather);
     fetch(currentWeather)
     .then(function(response){
        return response.json();
     })
-        .then(function(data){
-        displayWeather(data, city);        
+        .then(function(response){
+        displayWeather(response, city);        
         });
     }
 
 
-let displayWeather = function(weather, searchCity) {
+let displayWeather = function(response, searchCity) {
 
     weatherContainerEl.textContent="";
     searchInputEl.textContent=searchCity;
    
  let currentDate = document.createElement("span")
-currentDate.textContent=" (" + moment(weather.value).format("MMM Do, YYYY") + ") ";
+currentDate.textContent=" (" + moment(response.value).format("MMM Do, YYYY") + ") ";
 searchInputEl.appendChild(currentDate);
 
 let temperatureEl = document.createElement("span");
-temperatureEl.textContent = "Temperature: " + weather.main.temperature + " F";
+temperatureEl.textContent = "Temperature: " + response.main.temperature + " F";
 temperatureEl.classList= "list-group-item"
 
 let windSpeedEl = document.createElement("span");
-windSpeedEl.textContent = "Wind Speed: " + weather.wind.Speed + " mph";
+windSpeedEl.textContent = "Wind Speed: " + response.wind.Speed + " mph";
 windSpeedEl.classList = "list-group-item"
 
 let humidityEl = document.createElement("span");
-humidityEl.textContent = "Humidity: " + weather.main.humidity + " %";
+humidityEl.textContent = "Humidity: " + response.main.humidity + " %";
 humidityEl.classList = "list-group-item"
 
 let weatherImg = document.createElement("img")
@@ -75,18 +75,21 @@ weatherContainerEl.appendChild(temperatureEl);
 weatherContainerEl.appendChild(windSpeedEl);
 weatherContainerEl.appendChild(humidityEl);
 
-let lat = weather.coord.lat;
-let lon = weather.coord.lon;
+let lat = response.coord.lat;
+let lon = response.coord.lon;
+console.log(response.coord.lat);
+console.log(response.coord.lon);
 getUvIndex(lat,lon)
 }
 
 let getUvIndex = function(lat,lon){
-    const onecallAPI ='https://api.openweathermap.org/data/2.5/onecall?lat={lat}&lon={lon}&exclude=hourly,daily,minutely&appid=555a662aebacc0eabe7f6ef8fca6d35d'
+    const onecallAPI =`https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=hourly,daily,minutely&appid=555a662aebacc0eabe7f6ef8fca6d35d`
     fetch(onecallAPI)
     .then(function(response) {
         response.json()
         .then(function(data){
             displayUvIndex(data)
+            console.log(data);
         });
     });
 }
@@ -111,14 +114,16 @@ let displayUvIndex = function(index){
     weatherContainerEl.appendChild(uvIndexEl);
 }
 
-  let getfiveDay= function(){       
-    const fiveDays = 'http://api.openweathermap.org/data/2.5/onecall?lat=35.787743&lon=-78.644257&&units=imperial&exclude=current,minutely,hourlyappid=555a662aebacc0eabe7f6ef8fca6d35d'
+  let getfiveDay= function (){       
+   
+   const fiveDays = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&&units=imperial&exclude=minutely,hourlyappid=555a662aebacc0eabe7f6ef8fca6d35d`
 
     fetch(fiveDays)
     .then(function(response){
         response.json().then(function(data){
-            displayfiveDay(data[1]);
+            displayfiveDay(data);
         });
+        console.log(getfiveDay);
     });
 };
 
@@ -129,10 +134,11 @@ let displayfiveDay = function(weather){
     let forecast = weather.list;
     for(var i=5; i < forecast.length; i=i+8){
         let dailyForecast = forecast[i];
+       
 
-    let forecastEl=document.createElement('div');
+    let forecastEl=document.createElement("div");
     forecastEl.classList = "card bg-primary text-light m-2";
-
+        
 
     let forecastDate = document.createElement("h5")
     forecastDate.textContent=moment.unix(dailyForecast.dt).format("MMM D, YYYY");
@@ -146,13 +152,13 @@ let displayfiveDay = function(weather){
     forecastEl.appendChild(weatherImg);
 
     let forecastTemperatureEl = document.createElement("span");
-    forecastTemperatureEl.textContent = dailyForecast.main.temp + " F";
+    forecastTemperatureEl.textContent = response.main.temp + " F";
     forecastTemperatureEl.classList = "card-body text-center";
 
     forecastEl.appendChild(forecastTemperatureEl);
 
     let forecastHumidityEl=document.createElement("span");
-    forecastHumidityEl.textContent = dailyForecast.main.humidity + " %";
+    forecastHumidityEl.textContent = response.main.humidity + " %";
     forecastHumidityEl.classList = "card-body text-center";
 
     forecastEl.appendChild(forecastHumidityEl);
@@ -178,7 +184,7 @@ let searchHistoryHandler = function(event) {
     let city = event.target.getAttribute("data-city")
     if(city) {
         getCityWeather(city);
-        getfiveDay(city);
+        getfiveDay();
     }
 }
 //searchHistory();
