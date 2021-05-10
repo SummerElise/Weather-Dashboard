@@ -50,7 +50,6 @@ let displayWeather = function(response, searchCity) {
 
     weatherContainerEl.textContent="";
     searchInputEl.textContent=searchCity;
-   
  let currentDate = document.createElement("span")
 currentDate.textContent=" (" + moment(response.value).format("MMM Do, YYYY") + ") ";
 searchInputEl.appendChild(currentDate);
@@ -100,13 +99,13 @@ let displayUvIndex = function(index){
     uvIndexEl.classList = "list-group-item"
 
     uvIndexValue = document.createElement("span")
-    uvIndexValue.textContent = index.value
+    uvIndexValue.textContent = index.current.uvi
 
-    if(index.value <=2){
+    if(index.current.uvi <=2){
         uvIndexValue.classList = "low"
-    }else if(index.value >2 && index.value<=6){
+    }else if(index.current.uvi >2 && index.current.uvi<=6){
         uvIndexValue.classList = "medium"
-    }else if(index.value >6){
+    }else if(index.current.uvi >6){
         uvIndexValue.classList = "high"
     };
 
