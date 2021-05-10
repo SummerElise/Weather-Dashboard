@@ -56,11 +56,11 @@ currentDate.textContent=" (" + moment(response.value).format("MMM Do, YYYY") + "
 searchInputEl.appendChild(currentDate);
 
 let temperatureEl = document.createElement("span");
-temperatureEl.textContent = "Temperature: " + response.main.temperature + " F";
+temperatureEl.textContent = "Temperature: " + response.main.temp + " F";
 temperatureEl.classList= "list-group-item"
 
 let windSpeedEl = document.createElement("span");
-windSpeedEl.textContent = "Wind Speed: " + response.wind.Speed + " mph";
+windSpeedEl.textContent = "Wind Speed: " + response.wind.speed + " mph";
 windSpeedEl.classList = "list-group-item"
 
 let humidityEl = document.createElement("span");
