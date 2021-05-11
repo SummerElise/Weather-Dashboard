@@ -115,7 +115,7 @@ let displayUvIndex = function(index){
 
   let getfiveDayEl= function (weather){       
    
-   const fiveDays = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&&units=imperial&exclude=minutely,hourlyappid=555a662aebacc0eabe7f6ef8fca6d35d`
+   const fiveDays = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=555a662aebacc0eabe7f6ef8fca6d35d`
 
     fetch(fiveDays)
     .then(function(response){
