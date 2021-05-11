@@ -6,7 +6,7 @@ let searchInputEl = document.querySelector("#search-City");
 let weatherContainerEl = document.querySelector("#todays-weather-Container");
 let cityHistoryEl = document.querySelector("searched-Input");
 let forecastHeader = document.querySelector("#forecast");
-let fiveDayContainerEl = document.querySelector("#fiveDay-container");
+let fiveDayEl = document.querySelector("#fiveDay-container");
 let searchHistoryButtonEl = document.querySelector("#search-history-buttons");
 
 let formSubmitHandler = function(event){
@@ -113,26 +113,26 @@ let displayUvIndex = function(index){
     weatherContainerEl.appendChild(uvIndexEl);
 }
 
-  let getfiveDay= function (){       
+  let getfiveDayEl= function (weather){       
    
-   const fiveDays = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&&units=imperial&exclude=minutely,hourlyappid=555a662aebacc0eabe7f6ef8fca6d35d`
+   const fiveDays = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&&units=imperial&exclude=minutely,hourlyappid=555a662aebacc0eabe7f6ef8fca6d35d`
 
     fetch(fiveDays)
     .then(function(response){
         response.json().then(function(data){
-            displayfiveDay(data);
+            displayfiveDayEl(data);
         });
-        console.log(getfiveDay);
+        console.log(getfiveDayEl);
     });
 };
 
-let displayfiveDay = function(weather){
-    fiveDayContainerEl.textContent = ""
+let displayfiveDayEl = function(weather){
+    fiveDayEl.textContent = ""
     forecastHeader.textContent = "5-Day Forecast: ";
 
-    let forecast = weather.list;
-    for(var i=5; i < forecast.length; i=i+8){
-        let dailyForecast = forecast[i];
+    let forecastHeader = weather.list;
+    for(var i=5; i < forecastHeader.length; i=i+8){
+        let forecastHeader = forecastHeader[i];
        
 
     let forecastEl=document.createElement("div");
@@ -140,9 +140,9 @@ let displayfiveDay = function(weather){
         
 
     let forecastDate = document.createElement("h5")
-    forecastDate.textContent=moment.unix(dailyForecast.dt).format("MMM D, YYYY");
+    forecastDate.textContent=moment.unix(forecast.dt).format("MMM D, YYYY");
     forecastDate.classList = "card-header text-center"
-    fiveDayContainerEl.appendChild(forecastDate);
+    fiveDayEl.appendChild(forecastDate);
     
     let weatherImg = document.createElement("img")
     weatherImg.setAttribute("src", "https://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png");
@@ -162,7 +162,7 @@ let displayfiveDay = function(weather){
 
     forecastEl.appendChild(forecastHumidityEl);
 
-    fiveDayContainerEl.appendChild(forecastEl);
+    fiveDayEl.appendChild(forecastEl);
     }
 }
 
@@ -183,7 +183,7 @@ let searchHistoryHandler = function(event) {
     let city = event.target.getAttribute("data-city")
     if(city) {
         getCityWeather(city);
-        getfiveDay();
+        getfiveDayEl();
     }
 }
 //searchHistory();
