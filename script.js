@@ -113,14 +113,21 @@ let displayUvIndex = function(index){
     weatherContainerEl.appendChild(uvIndexEl);
 }
 
-  let getfiveDayEl= function (weather){       
+  let getfiveDayEl= function (x,y){       
    
-   const fiveDays = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=555a662aebacc0eabe7f6ef8fca6d35d`
+   const fiveDays = `https://api.openweathermap.org/data/2.5/onecall?lat=${x}&lon=${y}&exclude=hourly,minutely&units=imperial&appid=555a662aebacc0eabe7f6ef8fca6d35d`
 
     fetch(fiveDays)
     .then(function(response){
         response.json().then(function(data){
-            displayfiveDayEl(data);
+            // displayfiveDayEl(data);
+            console.log('check this out', data)
+            for (let index = 1; index < 6; index++) {
+                console.log('icon', `https://openweathermap.org/img/wn/${data.daily[index].weather[0].icon}@2x.png`)
+                console.log('temp', `${data.daily[index].temp.max} / ${data.daily[index].temp.min}`)
+                console.log('wind', data.daily[index].wind_speed)
+                console.log('humidity', data.daily[index].humidity) 
+            }
         });
         console.log(getfiveDayEl);
     });
